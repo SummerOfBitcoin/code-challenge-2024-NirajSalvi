@@ -280,6 +280,11 @@ fn main() {
     for i in txids {
         println!("{}",hex::encode(i));
     }
-    println!("merke root = {}",hex::encode(merkle_root));
+    // println!("merke root = {}",hex::encode(merkle_root));
+
+    // for i in wtxids {
+    //     println!("{}",hex::encode(i));
+    // }
+    // println!("witness root hash = {}",hex::encode(merkle_root));
 
 }

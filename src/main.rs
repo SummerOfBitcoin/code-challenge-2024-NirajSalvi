@@ -266,7 +266,7 @@ fn main() {
     println!("{}",hex::encode(dummy));
 
     for i in reverse_txids {
-        println!("{}",hex::encode(i));
+        println!("{}",i);
     }
 
 }

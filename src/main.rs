@@ -239,7 +239,7 @@ fn main() {
     let temp: String = txid.to_vec().iter().rev().map(|val| format!("{:02x}",*val)).collect();
     coinbase.txid = Some(temp);
 
-    let dummy = coinbase.wserialize_tx();        
+    let dummy = coinbase.coinbaseserialize_tx();        
 
     // println!("{:#?}",coinbase);
 

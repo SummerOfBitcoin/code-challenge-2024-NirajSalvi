@@ -257,7 +257,133 @@ impl btctx {
         for i in &self.vin {
 
             if i.witness != None {
-                let mut stacksize = encode_varint(02);
+                let mut stacksize = encode_varint(02);                
+                weight += stacksize.len();  
+                v.append(&mut stacksize);
+
+
+                let vec = i.witness.clone().unwrap();
+                for j in vec {
+
+                    let mut itemsize = encode_varint((j.len()/2) as u64);
+                    weight += itemsize.len();
+                    v.append(&mut itemsize);
+
+
+                    let mut item_bytes =hex::decode(&j).unwrap();
+                    weight += item_bytes.len();
+                    v.append(&mut item_bytes);
+
+                }
+            }
+        }
+
+        let mut locktime_bytes = self.locktime.to_le_bytes().to_vec();
+        // println!("{} = {:?}",self.locktime ,locktime_bytes );
+        weight += locktime_bytes.len()*4;
+        v.append(&mut locktime_bytes);
+
+        // println!("weight = {}",weight);
+
+        self.weight = Some(weight as u64);
+        // self.weight = Some(v.len() as u32);
+
+        self.feerate = Some(self.fee.unwrap() as f64/self.weight.unwrap() as f64);
+
+
+        v
+    }
+
+
+    pub fn coinbaseserialize_tx(&mut self) -> Vec<u8> {
+
+        let mut v: Vec<u8> = Vec::new();
+
+        let mut weight = 0;
+        
+        let mut version_bytes = self.version.to_le_bytes().to_vec();
+        // println!("{} = {:?}",self.version ,version_bytes );
+        weight += version_bytes.len()*4 ;
+        v.append(&mut version_bytes);
+        
+
+        if self.vin[0].witness != None {
+            let mut marker = encode_varint(00);
+            // println!("{} = {:?}",00 ,marker );
+            weight += marker.len();
+            v.append(&mut marker);
+
+            let mut flag = encode_varint(01);
+            weight += flag.len();
+            v.append(&mut flag);
+        }
+
+        let input_count = encode_varint(self.vin.len() as u64);
+        // println!("{} = {:?}",self.vin.len() ,input_count );
+        weight += input_count.len()*4;
+        v.append(&mut input_count.to_vec());
+
+        // let le_bytes = value.to_le_bytes().to_vec();
+
+        for i in &self.vin {
+            let mut txid = hex::decode(&i.txid).unwrap();
+            // println!("{} = {:?}",i.txid ,txid );
+            txid.reverse();
+            weight += txid.len()*4;
+            v.append(&mut txid);
+
+            let mut vout_bytes = i.vout.to_le_bytes().to_vec();
+            // println!("{} = {:?}",i.vout , vout_bytes);
+            weight += vout_bytes.len()*4;
+            v.append(&mut vout_bytes);
+
+            let mut scriptsig_size = encode_varint((i.scriptsig.len()/2) as u64); // Send 0 if cleaned
+            // println!("scriptsig len {} = {:?}", i.scriptsig.len(), scriptsig_size);
+            weight += scriptsig_size.len()*4;
+            v.append(&mut scriptsig_size);
+
+            let mut scriptsig_bytes =hex::decode(&i.scriptsig).unwrap();
+            // println!("{} = {:?}", i.scriptsig, scriptsig_bytes);
+            // println!("{}", i.scriptsig);
+            weight += scriptsig_bytes.len()*4;
+            v.append(&mut scriptsig_bytes);
+
+            let mut sequence_bytes = i.sequence.to_le_bytes().to_vec();
+            // println!("{} = {:?}", i.sequence, sequence_bytes );
+            weight += sequence_bytes.len()*4;
+            v.append(&mut sequence_bytes);
+
+        }
+
+
+        
+        let output_count = encode_varint(self.vout.len() as u64);
+        // println!("{} = {:?}", self.vout.len() , output_count );
+        weight += output_count.len()*4;
+        v.append(&mut output_count.to_vec());
+
+        for i in &self.vout {
+            let mut amount = i.value.to_le_bytes().to_vec();
+            // println!("{} = {:?}",i.value ,amount );
+            weight += amount.len()*4;
+            v.append(&mut amount);
+
+            let mut scriptpubkey_size = encode_varint((i.scriptpubkey.len()/2) as u64);
+            // println!("{} = {:?}",i.scriptpubkey.len() ,scriptpubkey_size );
+            weight += scriptpubkey_size.len()*4;
+            v.append(&mut scriptpubkey_size);
+
+            let mut scriptpubkey_bytes = hex::decode(&i.scriptpubkey).unwrap();
+            // println!("{} = {:?}",i.scriptpubkey ,scriptpubkey_bytes );
+            weight += scriptpubkey_bytes.len()*4;
+            v.append(&mut scriptpubkey_bytes);
+
+        }
+
+        for i in &self.vin {
+
+            if i.witness != None {
+                let mut stacksize = encode_varint(01);                
                 weight += stacksize.len();  
                 v.append(&mut stacksize);
 

@@ -289,6 +289,6 @@ fn main() {
     // for i in wtxids {
     //     println!("{}",hex::encode(i));
     // }
-    // println!("witness root hash = {}",hex::encode(merkle_root));
+    // println!("witness root hash = {}",hex::encode(witness_root_hash));
 
 }

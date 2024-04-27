@@ -1,7 +1,7 @@
 mod tx;
 mod interpreter;
 
-use std::{collections::HashSet, fs, io};
+use std::{collections::HashSet, fs, io, vec};
 
 use crate::tx::dsha256;
 
@@ -248,14 +248,14 @@ fn main() {
         txids.push(hex::decode(i.txid.unwrap()).unwrap());
     }
 
-    let mut reverse_txids: Vec<String> = Vec::new();
+    let mut reverse_txids: Vec<Vec<u8>> = Vec::new();
     for mut i in txids.clone() {
         i.reverse();
-        reverse_txids.push(hex::encode(i));
+        reverse_txids.push(i);
     }
     // println!("txids  = {:#?}",reverse_txids);
     
-    let merkle_root: Vec<u8> = tx::merkle_root(txids.clone());
+    let merkle_root: Vec<u8> = tx::merkle_root(reverse_txids.clone());
     // println!("merkle root = {:?}",hex::encode(merkle_root));
 
 
@@ -265,8 +265,11 @@ fn main() {
     
     println!("{}",hex::encode(dummy));
 
-    for i in reverse_txids {
-        println!("{}",i);
+    for i in verified_tx_3 {
+        let mut v = hex::decode(i.txid.unwrap()).unwrap();
+        // v.reverse();
+
+        println!("{}",hex::encode(v));
     }
 
 }

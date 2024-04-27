@@ -1,0 +1,5 @@
+v1_p2tr
+v0_p2wsh
+p2pkh
+v0_p2wpkh
+p2sh

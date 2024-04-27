@@ -223,9 +223,13 @@ fn main() {
         wtxids.push(hex::decode(i.wtxid.unwrap()).unwrap());
     }
 
+    let mut reverse_wtxids: Vec<Vec<u8>> = Vec::new();
+    for mut i in wtxids.clone() {
+        i.reverse();
+        reverse_wtxids.push(i);
+    }
 
-
-    let witness_root_hash: Vec<u8> = tx::merkle_root(wtxids.clone());
+    let witness_root_hash: Vec<u8> = tx::merkle_root(reverse_wtxids.clone());
     // let witness_root_hash: Vec<u8> = tx::merkle_root(wtxids.clone());
     let mut sum= Vec::new();
     sum.extend_from_slice(&witness_root_hash);

@@ -1,3 +1,3 @@
 # Update this file to run your own code
 
-cargo run
+cargo run --release > output.txt

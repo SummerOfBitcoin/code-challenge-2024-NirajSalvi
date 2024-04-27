@@ -224,17 +224,21 @@ fn main() {
     }
 
 
+
     let witness_root_hash: Vec<u8> = tx::merkle_root(wtxids.clone());
+    // let witness_root_hash: Vec<u8> = tx::merkle_root(wtxids.clone());
     let mut sum= Vec::new();
     sum.extend_from_slice(&witness_root_hash);
     sum.extend_from_slice(&witness_reserved_value);
     let wtxid_commitment = dsha256(sum);
 
     let mut coinbase = tx::coinbase(totalfee,hex::encode(wtxid_commitment));
+
     let dummy = coinbase.serialize_tx();        
     let txid = dsha256(dummy);
     let temp: String = txid.to_vec().iter().rev().map(|val| format!("{:02x}",*val)).collect();
     coinbase.txid = Some(temp);
+
     let dummy = coinbase.wserialize_tx();        
 
     // println!("{:#?}",coinbase);
@@ -255,21 +259,27 @@ fn main() {
     }
     // println!("txids  = {:#?}",reverse_txids);
     
+    // let merkle_root: Vec<u8> = tx::merkleroot(reverse_txids.clone()).first().unwrap().to_vec();
     let merkle_root: Vec<u8> = tx::merkle_root(reverse_txids.clone());
     // println!("merkle root = {:?}",hex::encode(merkle_root));
 
 
-    let block_header = tx::block_header(merkle_root);
+    let block_header = tx::block_header(merkle_root.clone());
 
     println!("{}",hex::encode(block_header));
     
     println!("{}",hex::encode(dummy));
 
-    for i in verified_tx_3 {
-        let mut v = hex::decode(i.txid.unwrap()).unwrap();
-        // v.reverse();
+    // for i in verified_tx_3 {
+    //     let mut v = hex::decode(i.txid.unwrap()).unwrap();
+    //     // v.reverse();
 
-        println!("{}",hex::encode(v));
+    //     println!("{}",hex::encode(v));
+    // }
+
+    for i in txids {
+        println!("{}",hex::encode(i));
     }
+    println!("merke root = {}",hex::encode(merkle_root));
 
 }

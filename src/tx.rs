@@ -367,7 +367,6 @@ pub fn coinbase(totalfee: u64 , wtxid_commitment: String) -> btctx {
 pub fn merkle_root(mut root : Vec<Vec<u8>>) -> Vec<u8> {
     let mut result: Vec<Vec<u8>> = Vec::new();
     result.extend_from_slice(&root);
-    let len = root.len();
 
     while result.len()>1 {
         if(result.len()%2==1) {
@@ -375,12 +374,12 @@ pub fn merkle_root(mut root : Vec<Vec<u8>>) -> Vec<u8> {
         }
         let mut v = Vec::new();
         for i in (0..result.len()).step_by(2) {
-            let first = &result[i];
-            let second = &result[i+1];
+            let mut first = result[i].clone();
+            let mut second = result[i+1].clone();
 
             let mut sum = Vec::new();
-            sum.extend_from_slice(first);
-            sum.extend_from_slice(second);
+            sum.append(&mut first);
+            sum.append(&mut second);
             let hash = dsha256(sum);
             v.push(hash);
         }
@@ -389,7 +388,6 @@ pub fn merkle_root(mut root : Vec<Vec<u8>>) -> Vec<u8> {
 
     result[0].clone()
 }
-
 
 pub fn block_header(merkle_root: Vec<u8>) -> Vec<u8> {
     

@@ -181,7 +181,7 @@ impl btctx {
         v.append(&mut version_bytes);
         
 
-        if self.vin[0].witness != None {
+        // if self.vin[0].witness != None {
             let mut marker = encode_varint(00);
             // println!("{} = {:?}",00 ,marker );
             weight += marker.len();
@@ -190,7 +190,7 @@ impl btctx {
             let mut flag = encode_varint(01);
             weight += flag.len();
             v.append(&mut flag);
-        }
+        // }
 
         let input_count = encode_varint(self.vin.len() as u64);
         // println!("{} = {:?}",self.vin.len() ,input_count );
@@ -257,7 +257,8 @@ impl btctx {
         for i in &self.vin {
 
             if i.witness != None {
-                let mut stacksize = encode_varint(02);                
+                // let mut stacksize = encode_varint(02);  
+                let mut stacksize = encode_varint(i.witness.clone().unwrap().len() as u64);
                 weight += stacksize.len();  
                 v.append(&mut stacksize);
 
@@ -275,6 +276,10 @@ impl btctx {
                     v.append(&mut item_bytes);
 
                 }
+            }
+            else {
+                let mut stacksize = encode_varint(00);
+                v.append(&mut stacksize);
             }
         }
 

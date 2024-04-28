@@ -279,6 +279,7 @@ impl btctx {
             }
             else {
                 let mut stacksize = encode_varint(00);
+                weight += stacksize.len();
                 v.append(&mut stacksize);
             }
         }
@@ -409,6 +410,7 @@ impl btctx {
             }
             else {
                 let mut stacksize = encode_varint(00);
+                weight += stacksize.len();
                 v.append(&mut stacksize);
             }
         }

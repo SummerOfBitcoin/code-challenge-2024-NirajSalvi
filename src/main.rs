@@ -12,11 +12,11 @@ use crate::tx::dsha256;
 fn main() {
     let mut tx_vec: Vec<tx::btctx> = Vec::new();
 
-    let paths = fs::read_dir("mempool/").unwrap();
+    // let paths = fs::read_dir("mempool/").unwrap();
     // let paths = fs::read_dir("serialize/").unwrap();
     // let paths = fs::read_dir("p2pkh/").unwrap();
     // let paths = fs::read_dir("multi_input_p2pkh/").unwrap();
-    // let paths = fs::read_dir("multi_input_p2wpkh/").unwrap();
+    let paths = fs::read_dir("multi_input_p2wpkh/").unwrap();
 
     for path in paths {
         // println!("Name: {}", path.unwrap().path().display());
@@ -143,6 +143,7 @@ fn main() {
             };
         };
         let dummy = i.wserialize_tx();
+        // println!("{}",hex::encode(&dummy));
         let wtxid =  dsha256(dummy.clone());
         let temp: String = wtxid.to_vec().iter().rev().map(|val| format!("{:02x}",*val)).collect();
         i.wtxid = Some(temp);
@@ -290,5 +291,12 @@ fn main() {
     //     println!("{}",hex::encode(i));
     // }
     // println!("witness root hash = {}",hex::encode(witness_root_hash));
+
+    // for i in verified_tx_3{
+    //     println!("wtxid = {}",hex::encode(i.clone().wtxid.unwrap()));
+    //     let dummy = i.clone().wserialize_tx();
+    //     println!("{}",hex::encode(dummy));
+    //     println!("{:#?}",i);
+    // }
 
 }

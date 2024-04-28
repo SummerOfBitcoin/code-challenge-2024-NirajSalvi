@@ -407,7 +407,12 @@ impl btctx {
 
                 }
             }
+            else {
+                let mut stacksize = encode_varint(00);
+                v.append(&mut stacksize);
+            }
         }
+        
 
         let mut locktime_bytes = self.locktime.to_le_bytes().to_vec();
         // println!("{} = {:?}",self.locktime ,locktime_bytes );

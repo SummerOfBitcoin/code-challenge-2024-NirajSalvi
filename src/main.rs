@@ -206,9 +206,9 @@ fn main() {
         }
     }
 
-    println!("totalfee = {}",totalfee);
-    println!("total transactions = {}",verified_tx_3.len());
-    println!("weight = {}",4000000 - 10000 - maxweight);
+    // println!("totalfee = {}",totalfee);
+    // println!("total transactions = {}",verified_tx_3.len());
+    // println!("weight = {}",4000000 - 10000 - maxweight);
 
     let mut wtxids: Vec<Vec<u8>> = Vec::new();
 

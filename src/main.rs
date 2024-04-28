@@ -13,9 +13,10 @@ fn main() {
     let mut tx_vec: Vec<tx::btctx> = Vec::new();
 
     // let paths = fs::read_dir("mempool/").unwrap();
+    let paths = fs::read_dir("mempool2/").unwrap();
     // let paths = fs::read_dir("serialize/").unwrap();
     // let paths = fs::read_dir("p2pkh/").unwrap();
-    let paths = fs::read_dir("multi_input_p2pkh/").unwrap();
+    // let paths = fs::read_dir("multi_input_p2pkh/").unwrap();
     // let paths = fs::read_dir("multi_input_p2wpkh/").unwrap();
 
     for path in paths {

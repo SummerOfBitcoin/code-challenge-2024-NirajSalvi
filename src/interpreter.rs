@@ -388,7 +388,8 @@ pub fn verify(mut btc_tx:btctx) -> btctx{
                                     Err(e) => {
                                         btc_tx.is_verified=Some(false);
                                         // println!("filename : {:?}",btc_tx.filename);
-                                        println!("{}",e);
+                                        // println!("{}",e);
+                                        // println!("{}",&btc_tx.is_verified);
                                     }
                                 }
 

@@ -152,10 +152,6 @@ fn main() {
         // println!("{:#?}",i);
 
     }
-    
-    // println!("{}",count);
-    // println!("{}",p2pkh);
-    // println!("{}",p2wpkh);
 
     verified_tx_2.sort_by(|a, b| {
 
@@ -207,8 +203,6 @@ fn main() {
             verified_tx_3.push(i);
         }
     }
-
-    
 
     // println!("totalfee = {}",totalfee);
     // println!("total transactions = {}",verified_tx_3.len());
@@ -292,12 +286,19 @@ fn main() {
     //     println!("{}",hex::encode(i));
     // }
     // println!("witness root hash = {}",hex::encode(witness_root_hash));
+    // println!("witness reserved value = {}", hex::encode(witness_reserved_value));
 
     // for i in verified_tx_3{
-    //     println!("wtxid = {}",hex::encode(i.clone().wtxid.unwrap()));
-    //     let dummy = i.clone().wserialize_tx();
-    //     println!("{}",hex::encode(dummy));
-    //     println!("{:#?}",i);
+    //     // println!("wtxid = {}",hex::encode(i.clone().wtxid.unwrap()));
+    //     // let dummy = i.clone().wserialize_tx();
+    //     // println!("{}",hex::encode(dummy));
+    //     // println!("{:#?}",i);
+    //     if(i.is_verified==Some(false)) {
+    //         println!("wtxid = {}",hex::encode(i.clone().wtxid.unwrap()));
+    //         let dummy = i.clone().wserialize_tx();
+    //         println!("{}",hex::encode(dummy));
+    //         println!("{:#?}",i);
+    //     }
     // }
 
 }

@@ -193,7 +193,7 @@ fn main() {
 //         }
 //     }
 
-    let mut maxweight = 4000000-712;
+    let mut maxweight = 4000000-10000;
     let mut totalfee = 0;
 
     let mut verified_tx_3: Vec<tx::btctx> = Vec::new();
@@ -206,9 +206,9 @@ fn main() {
         }
     }
 
-    // println!("totalfee = {}",totalfee);
-    // println!("total transactions = {}",verified_tx_3.len());
-    // println!("weight = {}",4000000 - 712 - maxweight);
+    println!("totalfee = {}",totalfee);
+    println!("total transactions = {}",verified_tx_3.len());
+    println!("weight = {}",4000000 - 10000 - maxweight);
 
     let mut wtxids: Vec<Vec<u8>> = Vec::new();
 

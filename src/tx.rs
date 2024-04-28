@@ -171,6 +171,8 @@ impl btctx {
 
     pub fn wserialize_tx(&mut self) -> Vec<u8> {
 
+        let tx_types: Vec<String> = self.vin.iter().map(|vin| vin.prevout.scriptpubkey_type.clone()).collect(); 
+        let is_segwit =tx_types.contains(&String::from("v0_p2wpkh"));
         let mut v: Vec<u8> = Vec::new();
 
         let mut weight = 0;
@@ -181,7 +183,7 @@ impl btctx {
         v.append(&mut version_bytes);
         
 
-        // if self.vin[0].witness != None {
+        if is_segwit {
             let mut marker = encode_varint(00);
             // println!("{} = {:?}",00 ,marker );
             weight += marker.len();
@@ -190,7 +192,7 @@ impl btctx {
             let mut flag = encode_varint(01);
             weight += flag.len();
             v.append(&mut flag);
-        // }
+        }
 
         let input_count = encode_varint(self.vin.len() as u64);
         // println!("{} = {:?}",self.vin.len() ,input_count );
@@ -254,33 +256,36 @@ impl btctx {
 
         }
 
-        for i in &self.vin {
+        if is_segwit { 
+            for i in &self.vin 
+            {
 
-            if i.witness != None {
-                // let mut stacksize = encode_varint(02);  
-                let mut stacksize = encode_varint(i.witness.clone().unwrap().len() as u64);
-                weight += stacksize.len();  
-                v.append(&mut stacksize);
-
-
-                let vec = i.witness.clone().unwrap();
-                for j in vec {
-
-                    let mut itemsize = encode_varint((j.len()/2) as u64);
-                    weight += itemsize.len();
-                    v.append(&mut itemsize);
+                if i.witness != None {
+                    // let mut stacksize = encode_varint(02);  
+                    let mut stacksize = encode_varint(i.witness.clone().unwrap().len() as u64);
+                    weight += stacksize.len();  
+                    v.append(&mut stacksize);
 
 
-                    let mut item_bytes =hex::decode(&j).unwrap();
-                    weight += item_bytes.len();
-                    v.append(&mut item_bytes);
+                    let vec = i.witness.clone().unwrap();
+                    for j in vec {
 
+                        let mut itemsize = encode_varint((j.len()/2) as u64);
+                        weight += itemsize.len();
+                        v.append(&mut itemsize);
+
+
+                        let mut item_bytes =hex::decode(&j).unwrap();
+                        weight += item_bytes.len();
+                        v.append(&mut item_bytes);
+
+                    }
                 }
-            }
-            else {
-                let mut stacksize = encode_varint(00);
-                weight += stacksize.len();
-                v.append(&mut stacksize);
+                else {
+                    let mut stacksize = encode_varint(00);
+                    weight += stacksize.len();
+                    v.append(&mut stacksize);
+                }
             }
         }
 

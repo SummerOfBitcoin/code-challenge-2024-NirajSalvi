@@ -15,7 +15,8 @@ fn main() {
     // let paths = fs::read_dir("mempool/").unwrap();
     // let paths = fs::read_dir("mempool_2/").unwrap();
     // let paths = fs::read_dir("mempool_3/").unwrap();
-    let paths = fs::read_dir("mempool_4/").unwrap();
+    // let paths = fs::read_dir("mempool_4/").unwrap();
+    let paths = fs::read_dir("mempool_5/").unwrap();
     // let paths = fs::read_dir("serialize/").unwrap();
     // let paths = fs::read_dir("p2pkh/").unwrap();
     // let paths = fs::read_dir("multi_input_p2pkh/").unwrap();
